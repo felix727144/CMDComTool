@@ -11,19 +11,20 @@ using duration_sec = std::chrono::duration<double>;
 using sys_time_point = std::chrono::system_clock::time_point;
 std::chrono::system_clock::time_point(*system_now)() = std::chrono::system_clock::now;
 int main(int argc, char* argv[]) {
-    serial::Serial input("/proc/self/fd/0");
     std::string line;
     auto ports=serial::list_ports();
     int portid=-1;
-    if(argc!=1){
+    if(argc!=2 || (argc>2 && 0==strcmp(argv[1],"-h"))){
         portid=0;
+	std::cout<<"Usage:CMDComTool <portid>"<<std::endl;
         for(auto p: ports){
             std::cout<<"["<<portid<<"] Disp:["<<p.description<<"] hid:["<<p.hardware_id<<"] port:["<<p.port<<"]"<<std::endl;
             portid++;
         }
         return -1;
     }
-    portid=0;
+    serial::Serial input("/proc/self/fd/0");
+    portid=atoi(argv[1]);
     if(portid<0 || portid>=ports.size()){
         std::cerr<<"port id out of range"<<std::endl;
         return -1;
