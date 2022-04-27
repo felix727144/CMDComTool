@@ -1,2 +1,2 @@
 # CMDComTool
-A command line version of COMTool
+A shell version of COMTool
