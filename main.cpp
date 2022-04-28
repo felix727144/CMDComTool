@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
         return -1;
     }
     try{
-        serial::Serial s(ports[portid].port,115200);
+        serial::Serial s(ports[portid].port,115200,serial::Timeout::simpleTimeout(50));
         sys_time_point last_got_data;
         size_t last_data_size=0;
         std::string line;
@@ -53,8 +53,9 @@ int main(int argc, char* argv[]) {
                 
                 std::cout<<str;
                 if(str.find('\r')!=-1){
-                    std::cout<<std::endl;
-                    s.write(input_line);
+                    size_t writed=s.write(input_line);
+                    //std::cout<<"your command:["<<input_line<<"] writed "<<writed<<" bytes..\r\n>";
+		    std::cout<<"\r\n>";
                     input_line.clear();
                 }else{
                     input_line+=str;
@@ -75,7 +76,7 @@ int main(int argc, char* argv[]) {
         }
     }catch(std::exception &e){
         std::cerr<<"got error "<<e.what()<<std::endl;
-        return -1;
+        //return -1;
     }
     input.close();
     struct termios options; // The options for the file descriptor
