@@ -18,6 +18,8 @@ FetchContent_Declare(serial
 FetchContent_MakeAvailable(serial)
 target_link_libraries(CMDComTool serial)
 
+install(TARGETS CMDComTool
+	DESTINATION bin)
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
 include(CPack)
